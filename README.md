@@ -6,8 +6,10 @@ This repository is a fork of [metaseq](https://github.com/facebookresearch/metas
 
 ## Citation
 
+If you use this code, please consider citing our work:
+
 ```
-@misc{cbtm,
+@article{cbtm,
  author = {Suchin Gururangan and Margaret Li and Mike Lewis and Weijia Shi and Tim Althoff and Noah A. Smith and Luke Zettlemoyer},
  title = {Scaling Expert Language Models with Unsupervised Domain Discovery},
  year = {2023}
@@ -294,6 +296,7 @@ The following script depends on the [`gnu-parallel`](https://www.gnu.org/softwar
 
 
 ```bash
+NUM_CLUSTERS=8;
 bash metaseq/scripts/consolidate_fsdp_shards.sh ${SERIALIZATION_DIR}/${NUM_CLUSTERS}_clusters/ "*ngpu4"
 ```
 
