@@ -1,6 +1,6 @@
 # Cluster-Branch-Train-Merge
 
-Code for the paper: "Scaling Expert Language Models with Unsupervised Domain Discovery"
+Code for the paper *Scaling Expert Language Models with Unsupervised Domain Discovery*
 
 ## Citation
 
