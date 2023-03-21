@@ -60,7 +60,7 @@ pip3 install -e .
 
 ### (Optional) Install Apex
 
-Optionally install Apex. This may not be compatible with all GPUs. In particular, if you're seeing that CUDA doesn't support your model during the forward pass, you might want to try uninstalling Apex and trying again.
+Apex may not be compatible with all GPUs. In particular, if you're seeing that CUDA doesn't support your model during the forward pass, you might want to try uninstalling Apex and trying again.
 
 ```bash
 git clone https://github.com/NVIDIA/apex.git
