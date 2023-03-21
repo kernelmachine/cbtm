@@ -351,7 +351,7 @@ This will output perplexity results to `${EVAL_DIR}/result.json`.
 
 Use the same command as above to evaluate your dense models, just change the environment variable `NUM_CLUSTERS=1`.
 
-On our machine we get `ppl: 17.86` for the 8-cluster model from this tutorial, and `ppl: 18.56` for the 1-cluster model. (Note that these perplexities are not reflective of anything meaningful other than for reproducibility purposes; increase the step size to 10000 to replicate our runs from the paper).
+On our machine we get `ppl: 17.86` for the 8-cluster model from this tutorial, and `ppl: 18.56` for the 1-cluster model. (Note that these perplexities are only for reproducibility purposes; increase the step size to 10000 to replicate our runs from the paper).
 
 ## MoE baseline training via sparse upcycling
 
