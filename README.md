@@ -350,7 +350,7 @@ Use the same command as above to evaluate your dense models.
 
 See our [fairseq fork](https://github.com/kernelmachine/sparse-upcycling) for instructions and code to train the  sparse upcycling MoE baseline.
 
-# Open-sourced c-BTM and dense (1-cluster) models trained on C4 and S2ORC
+# Open-sourced pretrained models
 
 ## Downloading clusterers and embedders
 
@@ -365,8 +365,6 @@ mkdir -p ${KMEANS_DIR}/${DATASET}/${NUM_CLUSTERS}/
 wget -O ${KMEANS_DIR}/${DATASET}/${NUM_CLUSTERS}/tfidf.pkl https://dl.fbaipublicfiles.com/cbtm/clusterers/${DATASET}/${NUM_CLUSTERS}/tfidf.pkl
 wget -O ${KMEANS_DIR}/${DATASET}/${NUM_CLUSTERS}/kmeans.pkl https://dl.fbaipublicfiles.com/cbtm/clusterers/${DATASET}/${NUM_CLUSTERS}/kmeans.pkl
 ```
-
-
 
 ## Downloading language models
 
@@ -388,7 +386,7 @@ mkdir -p ${PRETRAINED_MODELS_DIR}/cbtm/$FOLDER
 wget -O ${PRETRAINED_MODELS_DIR}/cbtm/$FOLDER/consolidated.pt https://dl.fbaipublicfiles.com/cbtm/cbtm_models/$DATASET/${MODEL_ARCH}/${NUM_CLUSTERS}_clusters/ngpu${GPUS_PER_EXPERT}/${CLUSTER_NUMBER}/consolidated.pt
 ```
 
-To get all n  experts for an n-cluster c-BTM model, you can do a for loop:
+To get all n experts for an n-cluster c-BTM model, you can do a for loop:
 
 ```bash
 # c4 or s2orc
@@ -412,7 +410,7 @@ These models can be evaluated using the command given above, under "Cluster BTM 
 
 See this [README](https://l.facebook.com/l.php?u=https%3A%2F%2Fdl.fbaipublicfiles.com%2FREADME&h=AT1F-a_xXIhZseEwKETbvCNYQIJlBJOLEU2_MkOfjxpaCML8sQz-hm7qGMpUAwJ-Zd3F-P3x3ZfrPCnxP2gME5jGSGZo8c7pCXB_NP1CyxkxJYQWGGPm2ZiTsur2Qt29FxgAF4V4IAoCDStOkr8y8hH0) for details on rate-limiting when downloading models.
 
-# Converting metaseq models to Huggingface transformers compatible checkpoints
+## Converting metaseq models to Huggingface transformers compatible checkpoints
 
 We have provided a script to convert all metaseq models to Huggingface transformers compatible checkpoints.
 
