@@ -112,6 +112,9 @@ def get_grid(args):
         H("--num-clusters", args.num_clusters, save_dir_key=lambda val: f"{args.cluster_tag}.numclusters{val}" if args.cluster_tag is not None else f"numclusters{val}")
         H("--path-to-clusters-dir", args.path_to_clusters_dir)
         H("--train-cluster", [int(x) for x in args.train_cluster.split(',')], save_dir_key=lambda val: f"cluster{val}")
+    else:
+        H("--num-clusters", 1, save_dir_key=lambda val: f"{args.cluster_tag}.numclusters{val}" if args.cluster_tag is not None else f"numclusters{val}")
+        H("--train-cluster", 0, save_dir_key=lambda val: f"cluster{val}")
     if args.random_clusters:
         H("--random-clusters")
         H("--num-clusters", args.num_clusters, save_dir_key=lambda val: f"randomclusters.numclusters{val}")

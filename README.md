@@ -351,6 +351,8 @@ This will output perplexity results to `${EVAL_DIR}/result.json`.
 
 Use the same command as above to evaluate your dense models, just change the environment variable `NUM_CLUSTERS=1`.
 
+On our machine we get `ppl: 17.86` for the 8-cluster model from this tutorial.
+
 ## MoE baseline training via sparse upcycling
 
 See our [fairseq fork](https://github.com/kernelmachine/sparse-upcycling) for instructions and code to train the  sparse upcycling MoE baseline.
