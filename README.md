@@ -106,10 +106,17 @@ export PRETRAINED_MODELS_DIR=${CBTM_DIR}/pretrained_models;
 mkdir -p ${CBTM_DIR} ${DATA_DIR} ${SERIALIZATION_DIR} ${KMEANS_DIR} ${CLUSTERS_DIR} ${VOCAB_DIR} ${PRETRAINED_MODELS_DIR};
 ```
 
-### Download seed models and vocab files
+
+### Configure cbtm_constants.py
 
 
-We use the GPT-2 vocabulary, which can be downloaded thus:
+Next, the constants necessary to make this repo work are at `metaseq/cbtm_constants.py`. Modify these to suit your local environment. 
+
+Make sure the variables in `metaseq/cbtm_constants.py` are consistent with the paths you set as environment variables above. 
+
+### Download vocab files and seed models
+
+We use the GPT-2 vocabulary:
 
 ```bash
 mkdir -p $VOCAB_DIR
@@ -117,7 +124,7 @@ wget -O $VOCAB_DIR/gpt2-vocab.json http://s3.wasabisys.com/c4-example/vocab/gpt2
 wget -O $VOCAB_DIR/gpt2-merges.txt http://s3.wasabisys.com/c4-example/vocab/gpt2-merges.txt
 ```
 
-To match our experiments, download OPT 1.3B and 6.7B models. This can be done from the [metaseq repository](https://github.com/facebookresearch/metaseq/tree/main/projects/OPT).
+Our seed models are OPT-1.3B and OPT-6.7B checkpoints. These can be downloaded from the [metaseq repository](https://github.com/facebookresearch/metaseq/tree/main/projects/OPT). 
 
 ```bash
 mkdir -p $PRETRAINED_MODELS_DIR
@@ -130,12 +137,6 @@ wget -O ${PRETRAINED_MODELS_DIR}/opt/6.7b/model_part-0.pt https://dl.fbaipublicf
 wget -O ${PRETRAINED_MODELS_DIR}/opt/6.7b/model_part-1.pt https://dl.fbaipublicfiles.com/opt/v1_20220502/6.7b/reshard-model_part-1.pt
 ```
 
-### Configure cbtm_constants.py
-
-
-Next, the constants necessary to make this repo work are at `metaseq/cbtm_constants.py`. Modify these to suit your local environment. 
-
-Make sure the variables in `metaseq/cbtm_constants.py` are consistent with the paths you set as environment variables above. 
 
 
 ### Download data
