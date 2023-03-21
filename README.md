@@ -287,7 +287,7 @@ This will output checkpoints to `${SERIALIZATION_DIR}/1_cluster/`
 
 
 
-# Evaluation
+## Evaluation
 
 To evaluate your models, first consolidate your shards into a single checkpoint file.
 
@@ -346,13 +346,13 @@ This will output perplexity results to `${EVAL_DIR}/result.json`.
 
 Use the same command as above to evaluate your dense models.
 
-# MoE baseline training via sparse upcycling
+## MoE baseline training via sparse upcycling
 
 See our [fairseq fork](https://github.com/kernelmachine/sparse-upcycling) for instructions and code to train the  sparse upcycling MoE baseline.
 
-# Open-sourced pretrained models
+## Open-sourced pretrained models
 
-## Downloading clusterers and embedders
+### Downloading clusterers and embedders
 
 To get a pretrained clusterer and embedder from the paper, you can run:
 
@@ -366,7 +366,7 @@ wget -O ${KMEANS_DIR}/${DATASET}/${NUM_CLUSTERS}/tfidf.pkl https://dl.fbaipublic
 wget -O ${KMEANS_DIR}/${DATASET}/${NUM_CLUSTERS}/kmeans.pkl https://dl.fbaipublicfiles.com/cbtm/clusterers/${DATASET}/${NUM_CLUSTERS}/kmeans.pkl
 ```
 
-## Downloading language models
+### Downloading language models
 
 To access the language models we trained in our paper, you can run the following command:
 
@@ -410,7 +410,7 @@ These models can be evaluated using the command given above, under "Cluster BTM 
 
 See this [README](https://l.facebook.com/l.php?u=https%3A%2F%2Fdl.fbaipublicfiles.com%2FREADME&h=AT1F-a_xXIhZseEwKETbvCNYQIJlBJOLEU2_MkOfjxpaCML8sQz-hm7qGMpUAwJ-Zd3F-P3x3ZfrPCnxP2gME5jGSGZo8c7pCXB_NP1CyxkxJYQWGGPm2ZiTsur2Qt29FxgAF4V4IAoCDStOkr8y8hH0) for details on rate-limiting when downloading models.
 
-## Converting metaseq models to Huggingface transformers compatible checkpoints
+### Converting from metaseq to Huggingface
 
 We have provided a script to convert all metaseq models to Huggingface transformers compatible checkpoints.
 
