@@ -14,7 +14,7 @@ Code for the paper *Scaling Expert Language Models with Unsupervised Domain Disc
 
 ## Create a new conda env (recommended)
 
-This will create a conda environment with python 3.9 and a variety of dependencies. This will take a few minutes.
+We supply an `environment.yml` file; this will create a conda environment with python 3.9 and a variety of dependencies. This will take a few minutes.
 
 ```bash
 conda env create -f environment.yml
