@@ -16,7 +16,7 @@ SUBSET=${15}
 TRAIN_SUBSET=${16}
 VALID_SUBSET=${17}
 PATH_TO_DATA=${18}
-PATH_TO_METASEQ=${19}
+PATH_TO_CBTM=${19}
 PARTITION=${20}
 ACCOUNT=${21}
 CONSTRAINT=${22}
@@ -122,6 +122,6 @@ python -m metaseq.fb_sweep.ft_stream \
     --max-valid-steps 100 \
     $LOCAL_PHRASE \
     $JOBARRAY_PHRASE \
-    --script ${PATH_TO_METASEQ}/metaseq_cli/train.py \
+    --script ${PATH_TO_CBTM}/metaseq_cli/train.py \
     --constraint $CONSTRAINT \
     --subset $SUBSET

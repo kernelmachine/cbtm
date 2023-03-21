@@ -5,7 +5,7 @@ import subprocess
 from metaseq.cbtm_constants import (DEFAULT_SLURM_ACCOUNT,
                                              DEFAULT_SLURM_CONSTRAINT,
                                              DEFAULT_SLURM_PARTITION,
-                                             PATH_TO_METASEQ)
+                                             PATH_TO_CBTM)
 
 # using getlogin() returning username
 # username = os.getlogin()
@@ -53,10 +53,10 @@ if __name__ == '__main__':
     world_size = args.num_gpus * args.num_nodes
 
     learning_rate = LEARNING_RATES[args.model_size] if args.learning_rate is None else args.learning_rate
-    if not PATH_TO_METASEQ:
-        raise ValueError("PATH_TO_METASEQ must be set in metaseq/cbtm_constants.py.")
+    if not PATH_TO_CBTM:
+        raise ValueError("PATH_TO_CBTM must be set in metaseq/cbtm_constants.py.")
 
-    command = f"bash {PATH_TO_METASEQ}/metaseq/scripts/train_cbtm.sh \
+    command = f"bash {PATH_TO_CBTM}/metaseq/scripts/train_cbtm.sh \
                 {args.num_nodes} \
                 {args.num_gpus} \
                 {args.model_size} \
@@ -75,7 +75,7 @@ if __name__ == '__main__':
                 {args.train_subset} \
                 {args.valid_subset} \
                 {args.path_to_data} \
-                {PATH_TO_METASEQ} \
+                {PATH_TO_CBTM} \
                 {args.slurm_partition} \
                 {args.slurm_account} \
                 {args.slurm_constraint} \
