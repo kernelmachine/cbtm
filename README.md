@@ -60,7 +60,7 @@ pip3 install -e .
 
 ### (Optional) Install Apex
 
-Optionally install Apex. This may not be compatible with all GPUs. In particular, if you're seeing that CUDA doesn't support your model during the forward pass, you might want to try uninstalling Apex and trying again.
+Apex may not be compatible with all GPUs. In particular, if you're seeing that CUDA doesn't support your model during the forward pass, you might want to try uninstalling Apex and trying again.
 
 ```bash
 git clone https://github.com/NVIDIA/apex.git
@@ -79,9 +79,7 @@ pip3 install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cu
 Build the c-BTM library. This won't really do anything if you've used the `environment.yml` file to build your conda environment.
 
 ```bash
-cd ~
-git clone https://github.com/kernelmachine/cbtm.git
-cd cbtm
+cd /path/to/cbtm
 pip3 install -e .
 ```
 
@@ -226,13 +224,13 @@ Now we'll use the clustered data to train experts. You'll need at least 4 GPUs s
 
 This tutorial uses our `train_cbtm` script, which interfaces with SLURM. 
 
-We have also provided an example sbatch script, if desired, in `metaseq/docs/example_sbatch.sh`. You may need to edit this example sbatch command to include any additional slurm arguments you might need, or otherwise.
+We have also provided an example sbatch script, if desired, in `metaseq/scripts/example_sbatch.sh`. You may need to edit this example sbatch command to include any additional slurm arguments you might need to get it working on your system.
 
 
 ### Train experts
 
 
-The following will train 8 expert models with 4 GPUs each for 50 steps (increase to 10000 steps to replicate our paper).
+The following command will train 8 expert models with 4 GPUs each for 50 steps (increase to 10000 steps to replicate our paper).
 
 
 ```bash
@@ -257,12 +255,12 @@ To train on a specific cluster(s), you can add the flag `--train-cluster 1,3,5`
 
 To debug locally, change the `run` flag to `--run local`.
 
-This will output checkpoints and logs to `${SERIALIZATION_DIR}/8_clusters/`
+This command will output checkpoints and logs to `${SERIALIZATION_DIR}/8_clusters/`.
 
 
 ### Dense training
 
-The following will train a dense model with 4 GPUs for 50 steps (increase to 10000 steps to replicate our paper).
+The following command will train a dense model with 4 GPUs for 50 steps (increase to 10000 steps to replicate our paper).
 
 ```bash
 DATASET=c4_example;
@@ -283,7 +281,7 @@ python -m metaseq.scripts.train_cbtm \
 
 To debug locally, change the `run` flag to `--run local`.
 
-This will output checkpoints to `${SERIALIZATION_DIR}/1_cluster/`
+This command will output checkpoints to `${SERIALIZATION_DIR}/1_cluster/`.
 
 
 
