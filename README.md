@@ -1,4 +1,16 @@
-# Environment setup
+# Cluster-Branch-Train-Merge
+
+Code for the paper: "Scaling Expert Language Models with Unsupervised Domain Discovery"
+
+## Citation
+
+```
+@misc{cbtm,
+ author = {Suchin Gururangan and Margaret Li and Mike Lewis and Weijia Shi and Tim Althoff and Noah A. Smith and Luke Zettlemoyer},
+ title = {Scaling Expert Language Models with Unsupervised Domain Discovery},
+ year = {2023}
+}
+```
 
 ## Create a new conda env (recommended)
 
