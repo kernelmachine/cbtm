@@ -2,6 +2,8 @@
 
 Code for the paper *Scaling Expert Language Models with Unsupervised Domain Discovery*
 
+This repository is a fork of [metaseq](https://github.com/facebookresearch/metaseq/).
+
 ## Citation
 
 ```
