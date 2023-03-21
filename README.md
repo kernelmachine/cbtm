@@ -72,9 +72,9 @@ Depending on your hardware, you may need to comment out lines 101-107 in setup.p
 pip3 install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" --global-option="--deprecated_fused_adam" --global-option="--xentropy" --global-option="--fast_multihead_attn" ./
 ```
 
-## Install CBTM library
+## Install c-BTM library
 
-Build the cBTM library.
+Build the c-BTM library.
 
 ```bash
 cd ~
@@ -87,7 +87,7 @@ pre-commit install
 ```
 
 
-# Cluster BTM Training and Evaluation
+# c-BTM Training and Evaluation
 
 ## Step 0: Set up data, models, and directories
 
@@ -350,7 +350,7 @@ Use the same command as above to evaluate your dense models.
 
 See our [fairseq fork](https://github.com/kernelmachine/sparse-upcycling) for instructions and code to train the  sparse upcycling MoE baseline.
 
-# Open-sourced CBTM and dense (1-cluster) models trained on C4 and S2ORC
+# Open-sourced c-BTM and dense (1-cluster) models trained on C4 and S2ORC
 
 ## Downloading clusterers and embedders
 
@@ -388,7 +388,7 @@ mkdir -p ${PRETRAINED_MODELS_DIR}/cbtm/$FOLDER
 wget -O ${PRETRAINED_MODELS_DIR}/cbtm/$FOLDER/consolidated.pt https://dl.fbaipublicfiles.com/cbtm/cbtm_models/$DATASET/${MODEL_ARCH}/${NUM_CLUSTERS}_clusters/ngpu${GPUS_PER_EXPERT}/${CLUSTER_NUMBER}/consolidated.pt
 ```
 
-To get all n  experts for an n-cluster C-BTM model, you can do a for loop:
+To get all n  experts for an n-cluster c-BTM model, you can do a for loop:
 
 ```bash
 # c4 or s2orc
