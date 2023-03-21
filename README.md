@@ -295,6 +295,7 @@ The following script depends on the [`gnu-parallel`](https://www.gnu.org/softwar
 
 
 ```bash
+NUM_CLUSTERS=8;
 bash metaseq/scripts/consolidate_fsdp_shards.sh ${SERIALIZATION_DIR}/${NUM_CLUSTERS}_clusters/ "*ngpu4"
 ```
 
