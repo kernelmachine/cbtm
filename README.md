@@ -1,4 +1,4 @@
-# Cluster-Branch-Train-Merge
+# Cluster-Branch-Train-Merge (c-BTM)
 
 Code for the paper *Scaling Expert Language Models with Unsupervised Domain Discovery*
 
