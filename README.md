@@ -83,9 +83,6 @@ cd ~
 git clone https://github.com/kernelmachine/cbtm.git
 cd cbtm
 pip3 install -e .
-
-# turn on pre-commit hooks
-pre-commit install
 ```
 
 
