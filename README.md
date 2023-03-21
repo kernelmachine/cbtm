@@ -6,8 +6,10 @@ This repository is a fork of [metaseq](https://github.com/facebookresearch/metas
 
 ## Citation
 
+If you use this code, please consider citing our work:
+
 ```
-@misc{cbtm,
+@article{cbtm,
  author = {Suchin Gururangan and Margaret Li and Mike Lewis and Weijia Shi and Tim Althoff and Noah A. Smith and Luke Zettlemoyer},
  title = {Scaling Expert Language Models with Unsupervised Domain Discovery},
  year = {2023}
