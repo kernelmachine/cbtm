@@ -79,9 +79,7 @@ pip3 install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cu
 Build the c-BTM library. This won't really do anything if you've used the `environment.yml` file to build your conda environment.
 
 ```bash
-cd ~
-git clone https://github.com/kernelmachine/cbtm.git
-cd cbtm
+cd ~/cbtm
 pip3 install -e .
 
 # turn on pre-commit hooks
