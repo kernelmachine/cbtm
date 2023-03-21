@@ -29,7 +29,7 @@ We tested this code with torch compiled with Cuda 11.3.
 pip3 install torch==1.10.1+cu113  -f https://download.pytorch.org/whl/cu113/torch_stable.html
 ```
 
-## Install Megatron
+### Install Megatron
 
 ```bash
 git clone --branch fairseq_v2 https://github.com/ngoyal2707/Megatron-LM.git
@@ -38,7 +38,7 @@ pip3 install six regex
 pip3 install -e .
 ```
 
-## Install fairscale
+### Install fairscale
 
 ```bash
 git clone https://github.com/facebookresearch/fairscale.git
@@ -47,7 +47,7 @@ git checkout prefetch_fsdp_params_simple
 pip3 install -e .
 ```
 
-## Install balanced-kmeans
+### Install balanced-kmeans
 
 ```bash
 git clone https://github.com/kernelmachine/balanced-kmeans.git
@@ -56,7 +56,7 @@ pip3 install -e .
 ```
 
 
-## (Optional) Install Apex
+### (Optional) Install Apex
 
 Optionally install Apex. This may not be compatible with all GPUs. In particular, if you're seeing that CUDA doesn't support your model during the forward pass, you might want to try uninstalling Apex and trying again.
 
@@ -72,9 +72,9 @@ Depending on your hardware, you may need to comment out lines 101-107 in setup.p
 pip3 install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" --global-option="--deprecated_fused_adam" --global-option="--xentropy" --global-option="--fast_multihead_attn" ./
 ```
 
-## Install c-BTM library
+### Install c-BTM library
 
-Build the c-BTM library.
+Build the c-BTM library. This won't really do anything if you've used the `environment.yml` file to build your conda environment.
 
 ```bash
 cd ~
@@ -229,7 +229,7 @@ This tutorial uses our `train_cbtm` script, which interfaces with SLURM.
 We have also provided an example sbatch script, if desired, in `metaseq/docs/example_sbatch.sh`. You may need to edit this example sbatch command to include any additional slurm arguments you might need, or otherwise.
 
 
-#### Train experts
+### Train experts
 
 
 The following will train 8 expert models with 4 GPUs each for 50 steps (increase to 10000 steps to replicate our paper).
@@ -260,7 +260,7 @@ To debug locally, change the `run` flag to `--run local`.
 This will output checkpoints and logs to `${SERIALIZATION_DIR}/8_clusters/`
 
 
-#### Dense training
+### Dense training
 
 The following will train a dense model with 4 GPUs for 50 steps (increase to 10000 steps to replicate our paper).
 
