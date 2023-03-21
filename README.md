@@ -306,7 +306,7 @@ Now the checkpoints are ready for eval. To launch locally (make sure you have `$
 export NUM_CLUSTERS=8;
 # we want as many GPUs as we have clusters
 export NUM_GPUS=${NUM_CLUSTERS};
-export DATASET=c4;
+export DATASET=c4_example;
 export EVAL_DIR=${SERIALIZATION_DIR}/${NUM_CLUSTERS}_clusters/eval
 
 mkdir -p ${EVAL_DIR};
@@ -330,7 +330,7 @@ function join { local IFS=","; echo "$*"; }
 JOINED_MODEL_PATHS=$(join ${CONSOLIDATED_MODEL_PATHS[@]})
 
 python -m metaseq_cli.eval_cbtm \
-    --data-dir ${DATA_DIR}/c4 \
+    --data-dir ${DATA_DIR}/${DATASET} \
     --data-subset valid/C4_small \
     --path-to-clusterer ${KMEANS_DIR}/${DATASET}/${NUM_CLUSTERS}/ \
     --model-paths $(join ${CONSOLIDATED_MODEL_PATHS[@]}) \
