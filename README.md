@@ -235,7 +235,7 @@ We have also provided an example sbatch script, if desired, in `metaseq/scripts/
 ### Train experts
 
 
-The following will train 8 expert models with 4 GPUs each for 50 steps (increase to 10000 steps to replicate our paper).
+The following command will train 8 expert models with 4 GPUs each for 50 steps (increase to 10000 steps to replicate our paper).
 
 
 ```bash
@@ -260,12 +260,12 @@ To train on a specific cluster(s), you can add the flag `--train-cluster 1,3,5`
 
 To debug locally, change the `run` flag to `--run local`.
 
-This will output checkpoints and logs to `${SERIALIZATION_DIR}/8_clusters/`
+This command will output checkpoints and logs to `${SERIALIZATION_DIR}/8_clusters/`.
 
 
 ### Dense training
 
-The following will train a dense model with 4 GPUs for 50 steps (increase to 10000 steps to replicate our paper).
+The following command will train a dense model with 4 GPUs for 50 steps (increase to 10000 steps to replicate our paper).
 
 ```bash
 DATASET=c4_example;
@@ -286,7 +286,7 @@ python -m metaseq.scripts.train_cbtm \
 
 To debug locally, change the `run` flag to `--run local`.
 
-This will output checkpoints to `${SERIALIZATION_DIR}/1_cluster/`
+This command will output checkpoints to `${SERIALIZATION_DIR}/1_cluster/`.
 
 
 
