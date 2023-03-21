@@ -163,7 +163,6 @@ This command trains a balanced k-means clusterer on a single shard of the C4 tra
 Make sure you have access to a GPU here, to speed up training!
 
 ```bash
-cd cbtm;
 NUM_CLUSTERS=8;
 DATASET=c4_example;
 python -m metaseq.scripts.train_clusterer \
@@ -207,6 +206,8 @@ python -m metaseq.scripts.cluster \
 --split valid/C4_small \
 --run slurm;
 ```
+
+Logs for these clustering jobs appear in `${CBTM_DIR}/cluster_logs`.
 
 After these jobs complete, open files in ${CLUSTERS_DIR}, e.g., `${CLUSTERS_DIR}/${DATASET}/${NUM_CLUSTERS}/train/00000/C4.jsonl`. You should see lines like the following:
 
@@ -281,7 +282,7 @@ python -m metaseq.scripts.train_cbtm \
 
 To debug locally, change the `run` flag to `--run local`.
 
-This command will output checkpoints to `${SERIALIZATION_DIR}/1_cluster/`.
+This command will output checkpoints to `${SERIALIZATION_DIR}/1_clusters/`.
 
 
 
@@ -298,7 +299,7 @@ bash metaseq/scripts/consolidate_fsdp_shards.sh ${SERIALIZATION_DIR}/${NUM_CLUST
 
 This will create a `consolidated.pt` checkpoint in each model's folder. 
 
-Now the checkpoints are ready for eval. To launch locally (make sure you have `${NUM_CLUSTERS}` GPUs available):
+Now the checkpoints are ready for eval. To launch on slurm:
 
 ```bash
 export NUM_CLUSTERS=8;
@@ -335,14 +336,17 @@ python -m metaseq_cli.eval_cbtm \
     --job-dir ${EVAL_DIR} \
     --temperature 0.1 \
     --max-valid-steps 200 \
-    --ensemble-type clustering
+    --ensemble-type clustering \
+    --submitit
 ```
 
-To launch a slurm job array, add the flag `--submitit` to the command above. You can check out logs for your slurm job at `${EVAL_DIR}`.
+You can check out logs for your slurm job at `${EVAL_DIR}`.
+
+To launch locally, remove the flag `--submitit` in the command above. Make sure you have `$NUM_CLUSTERS` GPUs visible though!
 
 This will output perplexity results to `${EVAL_DIR}/result.json`.
 
-Use the same command as above to evaluate your dense models.
+Use the same command as above to evaluate your dense models, just change the environment variable `NUM_CLUSTERS=1`.
 
 ## MoE baseline training via sparse upcycling
 

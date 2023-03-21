@@ -32,12 +32,11 @@ fi
 
 if [ $NUM_CLUSTERS == 1 ]; then
     MOD_PHRASE="";
-    CHECKPOINT_DIR="/$SERIALIZATION_DIR/${NUM_CLUSTERS}_cluster";
 else
     MOD_PHRASE="--path-to-clusters-dir $PATH_TO_CLUSTERS_DIR --train-cluster $TRAIN_CLUSTER";
-    CHECKPOINT_DIR="/$SERIALIZATION_DIR/${NUM_CLUSTERS}_clusters";
-
 fi;
+
+CHECKPOINT_DIR="/$SERIALIZATION_DIR/${NUM_CLUSTERS}_clusters";
 
 PROJECT="cbtm.$DATA"
 
