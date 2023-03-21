@@ -229,7 +229,7 @@ Now we'll use the clustered data to train experts. You'll need at least 4 GPUs s
 
 This tutorial uses our `train_cbtm` script, which interfaces with SLURM. 
 
-We have also provided an example sbatch script, if desired, in `metaseq/docs/example_sbatch.sh`. You may need to edit this example sbatch command to include any additional slurm arguments you might need, or otherwise.
+We have also provided an example sbatch script, if desired, in `metaseq/docs/example_sbatch.sh`. You may need to edit this example sbatch command to include any additional slurm arguments you might need to get it working on your system.
 
 
 ### Train experts
