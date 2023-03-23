@@ -139,8 +139,8 @@ We provide some sample C4 data to get you started. Our model only expects (shard
 
 
 ```bash
-wget -O ${DATA_DIR}/c4_example.tar.gz http://s3.wasabisys.com/c4-example/c4_example.tar.gz
-tar -xvzf ${DATA_DIR}/c4_example.tar.gz -C ${DATA_DIR}
+mkdir -p ${DATA_DIR}/c4_example/
+wget -qO- http://s3.wasabisys.com/c4-example/c4_example.tar.gz | tar xvz -C ${DATA_DIR}/c4_example/
 ```
 
 This example dataset is a single shard of C4 and a small sample of data from the validation dataset. 
