@@ -127,8 +127,10 @@ Download the OPT-1.3B and OPT-6.7B checkpoints, which we use as our seed models:
 mkdir -p $PRETRAINED_MODELS_DIR
 mkdir -p ${PRETRAINED_MODELS_DIR}/opt/1.3b/
 mkdir -p ${PRETRAINED_MODELS_DIR}/opt/6.7b/
-wget -qO- dl.fbaipublicfiles.com/cbtm/opt_models/1.3B/sharded_for_ddp.tgz | tar xvz -C ${PRETRAINED_MODELS_DIR}/opt/1.3b/
-wget -qO- dl.fbaipublicfiles.com/cbtm/opt_models/6.7B/sharded_for_ddp.tgz | tar xvz -C ${PRETRAINED_MODELS_DIR}/opt/6.7b/
+wget -qO- dl.fbaipublicfiles.com/cbtm/opt_models/1.3B/sharded_for_ddp.tgz | tar xvz  --strip-components 6 -C ${PRETRAINED_MODELS_DIR}/opt/1.3b/
+wget -qO- dl.fbaipublicfiles.com/cbtm/opt_models/6.7B/sharded_for_ddp_part_0.tgz | tar xvz  --strip-components 6 -C ${PRETRAINED_MODELS_DIR}/opt/6.7b/
+wget -qO- dl.fbaipublicfiles.com/cbtm/opt_models/6.7B/sharded_for_ddp_part_1.tgz | tar xvz --strip-components 6 -C ${PRETRAINED_MODELS_DIR}/opt/6.7b/
+
 ```
 
 
