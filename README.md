@@ -121,7 +121,7 @@ wget -O $VOCAB_DIR/gpt2-vocab.json http://s3.wasabisys.com/c4-example/vocab/gpt2
 wget -O $VOCAB_DIR/gpt2-merges.txt http://s3.wasabisys.com/c4-example/vocab/gpt2-merges.txt
 ```
 
-Our seed models are OPT-1.3B and OPT-6.7B checkpoints. These can be downloaded from the [metaseq repository](https://github.com/facebookresearch/metaseq/tree/main/projects/OPT). 
+Download the OPT-1.3B and OPT-6.7B checkpoints, which we use as our seed models:
 
 ```bash
 mkdir -p $PRETRAINED_MODELS_DIR
