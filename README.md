@@ -127,11 +127,8 @@ Our seed models are OPT-1.3B and OPT-6.7B checkpoints. These can be downloaded f
 mkdir -p $PRETRAINED_MODELS_DIR
 mkdir -p ${PRETRAINED_MODELS_DIR}/opt/1.3b/
 mkdir -p ${PRETRAINED_MODELS_DIR}/opt/6.7b/
-
-wget -O ${PRETRAINED_MODELS_DIR}/opt/1.3b/model_part-0.pt https://dl.fbaipublicfiles.com/opt/v1_20220502/1.3b/reshard-model_part-0.pt
-wget -O ${PRETRAINED_MODELS_DIR}/opt/1.3b/model_part-1.pt https://dl.fbaipublicfiles.com/opt/v1_20220502/1.3b/reshard-model_part-1.pt
-wget -O ${PRETRAINED_MODELS_DIR}/opt/6.7b/model_part-0.pt https://dl.fbaipublicfiles.com/opt/v1_20220502/6.7b/reshard-model_part-0.pt
-wget -O ${PRETRAINED_MODELS_DIR}/opt/6.7b/model_part-1.pt https://dl.fbaipublicfiles.com/opt/v1_20220502/6.7b/reshard-model_part-1.pt
+wget -qO-  dl.fbaipublicfiles.com/cbtm/opt_models/1.3B/sharded_for_ddp.tgz | tar xvz -C ${PRETRAINED_MODELS_DIR}/opt/1.3b/
+wget -qO-  dl.fbaipublicfiles.com/cbtm/opt_models/6.7B/sharded_for_ddp.tgz | tar xvz -C ${PRETRAINED_MODELS_DIR}/opt/6.7b/
 ```
 
 
