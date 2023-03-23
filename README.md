@@ -354,7 +354,7 @@ On our machine we get `ppl: 17.86` for the 8-cluster model from this tutorial, a
 
 ## MoE baseline training via sparse upcycling
 
-See our [fairseq fork](https://github.com/kernelmachine/sparse-upcycling) for instructions and code to train the  sparse upcycling MoE baseline.
+See our [fairseq fork](https://github.com/kernelmachine/moe-fairseq) for instructions and code to train the  sparse upcycling MoE baseline.
 
 ## Open-sourced pretrained models
 
