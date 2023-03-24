@@ -35,6 +35,8 @@ pip3 install torch==1.10.1+cu113  -f https://download.pytorch.org/whl/cu113/torc
 
 ### Install Megatron
 
+Make sure you have a GPU and CUDA visible for this step.
+
 ```bash
 git clone --branch fairseq_v2 https://github.com/ngoyal2707/Megatron-LM.git
 cd Megatron-LM
