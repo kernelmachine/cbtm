@@ -136,7 +136,6 @@ Make sure the variables in `metaseq/cbtm_constants.py` are consistent with the p
 We use the GPT-2 vocabulary:
 
 ```bash
-mkdir -p $VOCAB_DIR
 wget -O $VOCAB_DIR/gpt2-vocab.json http://s3.wasabisys.com/c4-example/vocab/gpt2-vocab.json
 wget -O $VOCAB_DIR/gpt2-merges.txt http://s3.wasabisys.com/c4-example/vocab/gpt2-merges.txt
 ```
@@ -144,7 +143,6 @@ wget -O $VOCAB_DIR/gpt2-merges.txt http://s3.wasabisys.com/c4-example/vocab/gpt2
 Download the OPT-1.3B and OPT-6.7B checkpoints, which we use as our seed models:
 
 ```bash
-mkdir -p $PRETRAINED_MODELS_DIR
 mkdir -p ${PRETRAINED_MODELS_DIR}/opt/1.3b/
 mkdir -p ${PRETRAINED_MODELS_DIR}/opt/6.7b/
 wget -qO- dl.fbaipublicfiles.com/cbtm/opt_models/1.3B/sharded_for_ddp.tgz | tar xvz  --strip-components 6 -C ${PRETRAINED_MODELS_DIR}/opt/1.3b/
