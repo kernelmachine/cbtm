@@ -16,12 +16,24 @@ If you use this code, please consider citing our work:
 }
 ```
 
-## Create a new conda env (recommended)
-
-We supply an `environment.yml` file; this will create a conda environment with python 3.9 and a variety of dependencies. This will take a few minutes.
+## Clone this repository
 
 ```bash
-conda env create -f environment.yml
+git clone https://github.com/kernelmachine/cbtm.git
+cd cbtm
+```
+
+## Create a new conda env (recommended)
+
+```bash
+conda create -n cbtm python=3.9
+conda activate cbtm
+```
+
+Alternatively, we supply an `environment.yml` file; which can be used to create a conda environment with python 3.9 and a variety of dependencies. This will take a few minutes, and may not work for all versions of conda.
+
+```bash
+conda env create -n cbtm -f environment.yml
 conda activate cbtm
 ```
 
@@ -38,15 +50,17 @@ pip3 install torch==1.10.1+cu113  -f https://download.pytorch.org/whl/cu113/torc
 Make sure you have a GPU and CUDA visible for this step.
 
 ```bash
+cd ..
 git clone --branch fairseq_v2 https://github.com/ngoyal2707/Megatron-LM.git
 cd Megatron-LM
-pip3 install six regex
+pip3 install six regex numpy
 pip3 install -e .
 ```
 
 ### Install fairscale
 
 ```bash
+cd ..
 git clone https://github.com/facebookresearch/fairscale.git
 cd fairscale
 git checkout prefetch_fsdp_params_simple
@@ -56,6 +70,7 @@ pip3 install -e .
 ### Install balanced-kmeans
 
 ```bash
+cd ..
 git clone https://github.com/kernelmachine/balanced-kmeans.git
 cd balanced-kmeans
 pip3 install -e .
@@ -67,6 +82,7 @@ pip3 install -e .
 Apex may not be compatible with all GPUs. In particular, if you're seeing that CUDA doesn't support your model during the forward pass, you might want to try uninstalling Apex and trying again.
 
 ```bash
+cd ..
 git clone https://github.com/NVIDIA/apex.git
 cd apex
 git checkout e2083df5eb96643c61613b9df48dd4eea6b07690
@@ -80,10 +96,10 @@ pip3 install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cu
 
 ### Install c-BTM library
 
-Build the c-BTM library. This won't really do anything if you've used the `environment.yml` file to build your conda environment.
+Build the c-BTM library.
 
 ```bash
-cd /path/to/cbtm
+cd ../cbtm
 pip3 install -e .
 ```
 
