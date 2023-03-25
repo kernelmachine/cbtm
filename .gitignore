@@ -137,3 +137,12 @@ experimental/*
 
 # Weights and Biases logs
 wandb/
+
+# C-BTM assets
+
+clusterers/
+clusters/
+data/
+pretrained_models/
+vocab/
+experiments/
