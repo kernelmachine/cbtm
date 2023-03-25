@@ -1,25 +1,31 @@
 # SLURM variables
-DEFAULT_SLURM_ACCOUNT="zlab"
-DEFAULT_SLURM_CONSTRAINT="[rtx6k|a40|a100]"
-DEFAULT_SLURM_PARTITION="ckpt"
+DEFAULT_SLURM_ACCOUNT="slurm_account_name"
+DEFAULT_SLURM_CONSTRAINT=""
+DEFAULT_SLURM_PARTITION="slurm_partition_name"
+
+# top level CBTM folder
+CBTM_DIR = "/path/to/cbtm"
+
+# path to cbtm code
+PATH_TO_CBTM=f"{CBTM_DIR}/cbtm/"
 
 # path to data directory
-DATA_DIR="/gscratch/zlab/sg01/cbtm/data/"
+DATA_DIR = f"{CBTM_DIR}/data"
 
 # where models will be saved (we will add them under a folder called `opt_ft` in this directory)
-SERIALIZATION_DIR="/gscratch/zlab/sg01/cbtm/experiments/"
+SERIALIZATION_DIR = f"{CBTM_DIR}/experiments"
 
-# path to vocabulary (gpt2-merges.txt and gpt2-encoder.json)
-VOCAB_PATH="/gscratch/zlab/sg01/cbtm/vocab/"
+# where clusterers and clusters will be saved
+KMEANS_DIR = f"{CBTM_DIR}/clusterers"
+CLUSTERS_DIR = f"{CBTM_DIR}/clusters"
 
-# path to pretrained models
-PRETRAINED_MODELS_DIR="/gscratch/zlab/sg01/opt/"
+# path to vocabulary (gpt2-merges.txt and gpt2-vocab.json)
+VOCAB_DIR = f"{CBTM_DIR}/vocab"
 
+# paths to pretrained models
+PRETRAINED_MODELS_DIR = f"{CBTM_DIR}/pretrained_models"
 # path to 1.3B parameter OPT checkpoint
-PATH_TO_1_3B_MODEL="/gscratch/zlab/sg01/opt/1.3b/checkpoint_last.pt"
+PATH_TO_1_3B_MODEL = f"{PRETRAINED_MODELS_DIR}/1.3b/checkpoint_last.pt"
 # path to 6.7B parameter OPT checkpoint
-PATH_TO_6_7B_MODEL="/gscratch/zlab/sg01/opt/6.7b/checkpoint_last.pt"
-
-# path to cbtm library
-PATH_TO_CBTM="/gscratch/zlab/sg01/cbtm/"
+PATH_TO_6_7B_MODEL=f"{PRETRAINED_MODELS_DIR}/6.7b/checkpoint_last.pt"
 
