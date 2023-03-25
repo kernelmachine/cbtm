@@ -16,14 +16,16 @@ If you use this code, please consider citing our work:
 }
 ```
 
-## Clone this repository
+## Set up environment
+
+### Clone this repository
 
 ```bash
 git clone https://github.com/kernelmachine/cbtm.git
 cd cbtm
 ```
 
-## Create a new conda env (recommended)
+### Create a new conda env (recommended)
 
 ```bash
 conda create -n cbtm python=3.9
