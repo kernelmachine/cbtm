@@ -113,7 +113,7 @@ pip3 install -e .
 We'll use the following environment variables in this tutorial, for simplicity. You can set these to whatever you want.
 
 ```bash
-export CBTM_DIR=$PWD; 
+export CBTM_DIR=~/cbtm; 
 export DATA_DIR=${CBTM_DIR}/data;
 export SERIALIZATION_DIR=${CBTM_DIR}/experiments;
 export KMEANS_DIR=${CBTM_DIR}/clusterers;
@@ -140,7 +140,7 @@ wget -O $VOCAB_DIR/gpt2-vocab.json http://s3.wasabisys.com/c4-example/vocab/gpt2
 wget -O $VOCAB_DIR/gpt2-merges.txt http://s3.wasabisys.com/c4-example/vocab/gpt2-merges.txt
 ```
 
-Download the OPT-1.3B and OPT-6.7B checkpoints, which we use as our seed models:
+Download the OPT-1.3B and OPT-6.7B checkpoints, which we use as our seed models. If you don't plan to use the 6.7B model, you can skip the last 2 wgets, which will take a while to complete:
 
 ```bash
 mkdir -p ${PRETRAINED_MODELS_DIR}/opt/1.3b/
