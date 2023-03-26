@@ -43,24 +43,13 @@ MODEL_SIZES = {
     "175b": Size(96, 12288, 96, 128, int(0.25 * M), 3e-5, 8),  # GPTZ/GPT-3
 }
 
-# from appendix b of https://arxiv.org/pdf/2005.14165.pdf
-# see table 2.1 in https://arxiv.org/pdf/2005.14165.pdf
-
 for name, size in MODEL_SIZES.items():
     assert size.n_heads * size.d_head == size.emb_size, name
 
 
 class ComputeEnvs(Enum):
-    AZURE = "azure"
-    AWS = "aws"
-    RSC = "rsc"
     FAIR = "fair"
-
-
-DATA_LOCATIONS = {
-    ComputeEnvs.FAIR: "/large_experiments/xlmg/data/gptz",
-}
-
+    
 
 VALID_SUBSETS = [
     "valid/C4",
