@@ -11,7 +11,7 @@ from metaseq.fb_sweep.sweep import (
     main as fb_sweep_main,
 )
 from metaseq.constants import MODEL_SIZES, DATA_LOCATIONS, ComputeEnvs, VALID_SUBSETS
-from metaseq.cbtm_constants import VOCAB_PATH,PATH_TO_1_3B_MODEL, PATH_TO_6_7B_MODEL, DATA_DIR
+from metaseq.cbtm_constants import VOCAB_DIR, PATH_TO_1_3B_MODEL, PATH_TO_6_7B_MODEL, DATA_DIR
 
 DEFAULT_RANDOM_SEED = 1234
 
