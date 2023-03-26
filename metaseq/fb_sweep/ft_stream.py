@@ -18,8 +18,9 @@ DEFAULT_RANDOM_SEED = 1234
 # have to do this at the module level, unfortunately; unable to use args.<env>
 for _cluster, _folder in DATA_LOCATIONS.items():
     if os.path.exists(_folder):
-        if _cluster != ComputeEnvs.RSC:
-            from metaseq.fb_sweep.dependency_checks import *  # noqa
+        
+        
+        from metaseq.fb_sweep.dependency_checks import *  # noqa
         break
 
 PRETRAIN_MODEL_LOCATIONS = {
@@ -272,7 +273,6 @@ def get_grid(args):
 
 
 def postprocess_hyperparams(args, config):
-    args.azure_folder_auto_name = True
     pass
 
 
