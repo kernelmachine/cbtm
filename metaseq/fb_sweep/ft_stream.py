@@ -126,9 +126,9 @@ def get_grid(args):
         H("--train-cluster", [int(x) for x in args.train_cluster.split(',')], save_dir_key=lambda val: f"cluster{val}")
     
 
-    path_to_vocab = VOCAB_PATH
+    path_to_vocab = VOCAB_DIR
     if not path_to_vocab:
-        raise ValueError("VOCAB_PATH must be set in metaseq-internal.cbtm_constants")
+        raise ValueError("VOCAB_DIR must be set in metaseq-internal.cbtm_constants")
     H("--vocab-filename", f"{path_to_vocab}/gpt2-vocab.json")# , save_dir_key=lambda _: "gpt2")
     H(
         "--merges-filename",
