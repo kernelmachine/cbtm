@@ -30,6 +30,7 @@ cd cbtm
 ```bash
 conda create -n cbtm python=3.9
 conda activate cbtm
+
 ```
 
 Alternatively, we supply an `environment.yml` file; which can be used to create a conda environment with python 3.9 and a variety of dependencies. This will take a few minutes, and may not work for all versions of conda.
@@ -105,6 +106,14 @@ cd ../cbtm
 pip3 install -e .
 ```
 
+### Fix setuptools version
+
+There is a known compatibility problem between the above torch version and setuptools>=59.6.0, so we roll this package back:
+
+```bash
+pip3 install setuptools==59.5.0
+```
+
 
 # c-BTM Training and Evaluation
 
@@ -152,7 +161,6 @@ wget -qO- dl.fbaipublicfiles.com/cbtm/opt_models/6.7B/sharded_for_ddp_part_1.tgz
 ```
 
 
-
 ### Download data
 
 We provide some sample C4 data to get you started. Our model only expects (sharded) line-separated jsonl files, split into train and validation data. If you'd like to train on your own data, just follow the overall data layout in the example. 
@@ -160,7 +168,7 @@ We provide some sample C4 data to get you started. Our model only expects (shard
 
 ```bash
 mkdir -p ${DATA_DIR}/c4_example/
-wget -qO- http://s3.wasabisys.com/c4-example/c4_example.tar.gz | tar xvz -C ${DATA_DIR}/c4_example/
+wget -qO- http://s3.wasabisys.com/c4-example/c4_example.tar.gz | tar xvz -C ${DATA_DIR}/
 ```
 
 This example dataset is a single shard of C4 and a small sample of data from the validation dataset. 
