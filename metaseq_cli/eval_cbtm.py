@@ -477,7 +477,7 @@ def builder(cmd_args, dataset, port, eval_cluster, temperature):
         cmd_args.model_paths,
         cmd_args.data_dir,
         dataset,
-        VOCAB_PATH,
+        VOCAB_DIR,
         max_valid_steps=cmd_args.max_valid_steps,
         path_to_clusters_dir=cmd_args.path_to_clusters_dir,
         eval_cluster=eval_cluster
@@ -530,11 +530,7 @@ if __name__ == "__main__":
         nodes = len(cmd_args.model_paths) // 8 if len(cmd_args.model_paths) > 8 else 1
         timeout_min = 30
 
-        # partition = 'learnlab,devlab,scavenge' if cmd_args.partition in [None, "None"] else cmd_args.partition
         kwargs = {}
-
-        # kwargs['slurm_constraint'] = 'volta32gb'
-
 
         executor.update_parameters(
             mem_gb=100,
@@ -576,30 +572,3 @@ if __name__ == "__main__":
             for x in zip(cmd_args.data_subset, random_ports):
                 func(x)
 
-
-    # metaseq_cfg = build_eval_config(
-    #     cmd_args.model_paths,
-    #     cmd_args.data_dir,
-    #     cmd_args.data_subset,
-    #     VOCAB_PATH,
-    #     max_valid_steps=cmd_args.max_valid_steps,
-    #     path_to_clusters_dir=cmd_args.path_to_clusters_dir,
-    #     distributed_port=56000,
-    #     eval_cluster=cmd_args.eval_cluster,
-    # )
-    # func = lambda x: builder(cmd_args, x[0], x[1], None,)
-
-    # call_main(metaseq_cfg,
-    #         main,
-    #         cur_shard_str=cmd_args.shard,
-    #         path_to_clusterer=cmd_args.path_to_clusterer,
-    #         output_dir=cmd_args.job_dir,
-    #         ensemble_type=cmd_args.ensemble_type,
-    #         temperature=cmd_args.temperature,
-    #         cluster_ratio=cmd_args.cluster_ratio,
-    #         average=cmd_args.average,
-    #         random_clusters=cmd_args.random_clusters,
-    #         use_random_port=cmd_args.use_random_port,
-    #         topk=cmd_args.topk,
-    #         output_prefix=cmd_args.output_prefix,
-    # )
