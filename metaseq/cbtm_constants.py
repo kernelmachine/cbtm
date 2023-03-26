@@ -4,10 +4,10 @@ DEFAULT_SLURM_CONSTRAINT=""
 DEFAULT_SLURM_PARTITION="slurm_partition_name"
 
 # top level CBTM folder
-CBTM_DIR = "/path/to/cbtm"
+CBTM_DIR = f"/home/cbtm/"
 
 # path to cbtm code
-PATH_TO_CBTM=f"{CBTM_DIR}/cbtm/"
+PATH_TO_CBTM=f"/home/cbtm/"
 
 # path to data directory
 DATA_DIR = f"{CBTM_DIR}/data"
