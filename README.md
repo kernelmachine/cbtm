@@ -262,15 +262,24 @@ The following command will train 8 expert models with 4 GPUs each for 50 steps (
 
 
 ```bash
-NUM_CLUSTERS=8;
 DATASET=c4_example;
+NUM_CLUSTERS=8;
+NUM_GPUS_PER_EXPERT=4;
+
+if [[ "$NUM_GPUS_PER_EXPERT" -lt 8 ]]; then
+    NUM_NODES=1
+    NUM_GPUS_PER_NODE=$NUM_GPUS
+else 
+    NUM_NODES=$((NUM_GPUS/8))
+    NUM_GPUS_PER_NODE=8
+fi
 python -m metaseq.scripts.train_cbtm \
    --model-size 1.3b \
    --run slurm   \
    --path-to-clusters-dir $CLUSTERS_DIR/${DATASET}/$NUM_CLUSTERS/ \
    --num-clusters $NUM_CLUSTERS  \
-   --num-nodes 1 \
-   --num-gpus 4 \
+   --num-nodes $NUM_NODES \
+   --num-gpus $NUM_GPUS_PER_NODE \
    --data-name ${DATASET}  \
    --path-to-data $DATA_DIR/${DATASET} \
    --learning-rate 2e-4 \
@@ -292,13 +301,21 @@ The following command will train a dense model with 4 GPUs for 50 steps (increas
 
 ```bash
 DATASET=c4_example;
+NUM_GPUS_PER_EXPERT=4;
+
+if [[ "$NUM_GPUS_PER_EXPERT" -lt 8 ]]; then
+    NUM_NODES=1
+    NUM_GPUS_PER_NODE=$NUM_GPUS
+else 
+    NUM_NODES=$((NUM_GPUS/8))
+    NUM_GPUS_PER_NODE=8
+fi
 python -m metaseq.scripts.train_cbtm \
    --num-clusters 1 \
    --model-size 1.3b \
    --run slurm \
-   --data-name $DATASET  \
-   --num-nodes 1 \
-   --num-gpus 4 \
+   --num-nodes $NUM_NODES \
+   --num-gpus $NUM_GPUS_PER_NODE \
    --data-name ${DATASET}  \
    --path-to-data $DATA_DIR/$DATASET  \
    --learning-rate 2e-4 \
@@ -317,12 +334,14 @@ This command will output checkpoints to `${SERIALIZATION_DIR}/1_clusters/`.
 
 To evaluate your models, first consolidate your shards into a single checkpoint file.
 
-The following script depends on the [`gnu-parallel`](https://www.gnu.org/software/parallel/) package.
+The following script depends on the [`gnu-parallel`](https://www.gnu.org/software/parallel/) package. You may need to modify the last line of `metaseq/scripts
+/consolidate_fsdp_shards.sh` to point to your gnu-parallel path.
 
 
 ```bash
 NUM_CLUSTERS=8;
-bash metaseq/scripts/consolidate_fsdp_shards.sh ${SERIALIZATION_DIR}/${NUM_CLUSTERS}_clusters/ "*ngpu4"
+NUM_GPUS_PER_EXPERT=4;
+bash metaseq/scripts/consolidate_fsdp_shards.sh ${SERIALIZATION_DIR}/${NUM_CLUSTERS}_clusters/ "*ngpu${NUM_GPUS_PER_EXPERT}"
 ```
 
 This will create a `consolidated.pt` checkpoint in each model's folder. 
