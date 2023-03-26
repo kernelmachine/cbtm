@@ -25,7 +25,7 @@ VOCAB_DIR = f"{CBTM_DIR}/vocab"
 # paths to pretrained models
 PRETRAINED_MODELS_DIR = f"{CBTM_DIR}/pretrained_models"
 # path to 1.3B parameter OPT checkpoint
-PATH_TO_1_3B_MODEL = f"{PRETRAINED_MODELS_DIR}/1.3b/checkpoint_last.pt"
+PATH_TO_1_3B_MODEL = f"{PRETRAINED_MODELS_DIR}/opt/1.3b/checkpoint_last.pt"
 # path to 6.7B parameter OPT checkpoint
-PATH_TO_6_7B_MODEL=f"{PRETRAINED_MODELS_DIR}/6.7b/checkpoint_last.pt"
+PATH_TO_6_7B_MODEL=f"{PRETRAINED_MODELS_DIR}/opt/6.7b/checkpoint_last.pt"
 
