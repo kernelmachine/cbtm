@@ -602,7 +602,7 @@ class CheckpointConfig(MetaseqDataclass):
     #  to use ComputeEnvs constant
     cluster_env: str = field(
         default="fair",
-        metadata={"help": "cluster we are running on: azure/aws/fair/rsc"},
+        metadata={"help": "cluster we are running on"},
     )
     model_parallel_size: int = II("common.model_parallel_size")
 
