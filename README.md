@@ -1,6 +1,6 @@
 # Cluster-Branch-Train-Merge (c-BTM)
 
-Code for the paper *Scaling Expert Language Models with Unsupervised Domain Discovery*
+Code for the paper *[Scaling Expert Language Models with Unsupervised Domain Discovery](arxiv.org/abs/2303.14177)*
 
 This repository is a fork of [metaseq](https://github.com/facebookresearch/metaseq/).
 
