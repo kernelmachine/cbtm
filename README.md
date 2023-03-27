@@ -12,6 +12,7 @@ If you use this code, please consider citing our work:
 @article{cbtm,
  author = {Suchin Gururangan and Margaret Li and Mike Lewis and Weijia Shi and Tim Althoff and Noah A. Smith and Luke Zettlemoyer},
  title = {Scaling Expert Language Models with Unsupervised Domain Discovery},
+ journal={arXiv preprint arXiv:2303.14177},
  year = {2023}
 }
 ```
