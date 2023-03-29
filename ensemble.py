@@ -45,8 +45,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('dataset', type=str)
     parser.add_argument('--model', type=str, default='xl')
-    parser.add_argument('--softmax', type=int, default=0)
-    parser.add_argument('--coeffs', type=int, default=0)
+    parser.add_argument('--softmax', type=int, default=1)
+    parser.add_argument('--coeffs', type=int, default=1)
     parser.add_argument('--output', type=str, default='./')
     parser.add_argument('--n-shot', type=int, default=0)
     parser.add_argument('--topk', type=int, default=1)
@@ -270,7 +270,7 @@ if __name__ == '__main__':
                 "lambda_ex": lambda_ex.tolist()
         }
         final_predictions_list.append(pred)
-        
+
     all_topk_counter = Counter(all_topk_index)
     print("topk: ", all_topk_counter.most_common(10))
     accs, preds, predictions_list = compute_acc(final_predictions_list)
