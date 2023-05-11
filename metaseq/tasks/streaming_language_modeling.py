@@ -93,16 +93,16 @@ class StreamingLanguageModelingConfig(MetaseqDataclass):
     )
 
     path_to_clusters_dir: Optional[str] = field(
-        default=None, metadata={"help": "force vocab size to this"}
+        default=None, metadata={"help": "path to directory containing clusters files"}
     )
     train_cluster: Optional[int] = field(
-        default=None, metadata={"help": "force vocab size to this"}
+        default=None, metadata={"help": "which cluster to train on"}
     )
     random_clusters: Optional[bool] = field(
-        default=False, metadata={"help": "force vocab size to this"}
+        default=False, metadata={"help": "whether to use random \'clusters\'"}
     )
     num_clusters: Optional[int] = field(
-        default=None, metadata={"help": "force vocab size to this"}
+        default=None, metadata={"help": "total number of clusters"}
     )
 
     multicorpus_sampling_alpha: Optional[float] = field(

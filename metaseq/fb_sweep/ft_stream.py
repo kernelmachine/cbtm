@@ -18,16 +18,13 @@ DEFAULT_RANDOM_SEED = 1234
 # have to do this at the module level, unfortunately; unable to use args.<env>
 for _cluster, _folder in DATA_LOCATIONS.items():
     if os.path.exists(_folder):
-        
-        
         from metaseq.fb_sweep.dependency_checks import *  # noqa
         break
 
+
 PRETRAIN_MODEL_LOCATIONS = {
-    ComputeEnvs.FAIR: {
-        "1.3b": PATH_TO_1_3B_MODEL,
-        "6.7b": PATH_TO_6_7B_MODEL
-    }
+    "1.3b": PATH_TO_1_3B_MODEL,
+    "6.7b": PATH_TO_6_7B_MODEL
 }
 
 
@@ -73,7 +70,7 @@ def get_grid(args):
 
     size = MODEL_SIZES[args.model_size]
     if args.finetune_from_model is None and args.restore_file is None:
-        args.finetune_from_model = PRETRAIN_MODEL_LOCATIONS[cluster_env][
+        args.finetune_from_model = PRETRAIN_MODEL_LOCATIONS[
             args.model_size
         ]
 

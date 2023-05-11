@@ -1,11 +1,8 @@
 import argparse
 import datetime
 import os
-import subprocess
 from typing import Optional, List, Callable, MutableMapping
 from urllib.parse import urlparse
-
-from metaseq.constants import ComputeEnvs
 
 
 class hyperparam(object):
@@ -63,21 +60,6 @@ class hyperparam(object):
         if self.binary_flag:
             return self.save_dir_key(1) if self.current_value else None
         return self.save_dir_key(self.current_value)
-
-
-def get_env_from_args(args):
-    if args.azure:
-        return ComputeEnvs.AZURE
-    elif args.aws:
-        return ComputeEnvs.AWS
-    elif args.fair:
-        return ComputeEnvs.FAIR
-    elif args.rsc:
-        return ComputeEnvs.RSC
-    else:
-        raise NotImplementedError(
-            "Env not passed in! Please pass in one of: --azure, --aws, --fair, --rsc"
-        )
 
 
 def _get_args(add_extra_options_func=None, input_args: Optional[List[str]] = None):
@@ -217,9 +199,6 @@ def _get_args(add_extra_options_func=None, input_args: Optional[List[str]] = Non
         help="Folder name for job-array. Defaults to <jobarray_timestamp>",
     )
 
-    # Env flags
-    parser.add_argument("--fair", action="store_true", help="running on fair")
-
     # Following args have env specific defaults.
     parser.add_argument(
         "--partition",
@@ -256,11 +235,6 @@ def _get_args(add_extra_options_func=None, input_args: Optional[List[str]] = Non
         add_extra_options_func(parser)
     args = parser.parse_args(input_args)
 
-    # Env check
-    assert (
-        sum(args.fair]) == 1
-    ), "Must pass an env, and only one env!"
-
     if args.use_jobarray:
         if args.jobarray_name is None:
             ja_hash = datetime.datetime.now().isoformat().replace(":", "_")
@@ -268,13 +242,11 @@ def _get_args(add_extra_options_func=None, input_args: Optional[List[str]] = Non
         assert not args.local, "Job array should not be local"
         assert not args.sequential, "Cannot have both sequential and jobarray"
 
-    # Set defaults based on env
-    env = get_env_from_args(args)
-    _modify_arg_defaults_based_on_env(env, args)
+    _modify_arg_defaults(args)
     return args
 
 
-def _modify_arg_defaults_based_on_env(env, args):
+def _modify_arg_defaults(args):
     default_partition = None
 
     default_prefix = ""
