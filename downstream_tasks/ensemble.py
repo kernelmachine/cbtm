@@ -1,5 +1,6 @@
 import argparse
 import json
+import math
 import numpy as np
 import os
 import pandas as pd
@@ -195,10 +196,16 @@ def ensemble_predictions(all_predictions_list, all_lambdas, save_dir, topk, num_
 
 
 def main(args):
-    topk_list = [int(t) if (int(t) != -1) else args.num_clusters for t in args.topk]
-
     if args.debug:
         pdb.set_trace()
+
+    if len(args.topk) == 1 and args.topk[0] == 'all':
+        exponent = int(math.log(args.num_clusters, 2))
+        topk_list = [2**j for j in range(exponent)]
+    else:
+        topk_list = [int(t) if (int(t) != -1) else args.num_clusters for t in args.topk]
+
+    print(topk_list)
 
     os.environ['PYTHONHASHSEED'] = str(args.seed)
     random.seed(args.seed)
@@ -266,7 +273,7 @@ if __name__ == '__main__':
     parser.add_argument('--softmax', type=int, default=1)
     parser.add_argument('--coeffs', type=int, default=1)
     parser.add_argument('--n-shot', type=int, default=0)
-    parser.add_argument('--topk', nargs='+', default=[1])
+    parser.add_argument('--topk', nargs='+', default=[-1])
     parser.add_argument('--split', type=str, default='test')
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--num-clusters', type=int, default=0)

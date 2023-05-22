@@ -7,7 +7,7 @@ pip install openai accelerate
 
 ## Converting models to HuggingFace format
 
-Our downstream task evaluation setup assumes that models are saved in a format compatible with the HuggingFace libraries. We've provided a script which, given a directory containing our models, will iterate through all subdirectories looking for files named `$FAIRSEQ_FILE_NAME`, which we default to `consolidated.pt`, and converting those into Huggingface-compatible checkpoint files named `pytorch_model.bin` (the default determined by the transformers library). The are saved in `$HF_MODEL_DIR`, maintaining the folder structure of `$MODEL_FOLDER`. Any of the defined SLURM constants may be modified to suit your setup or preference:
+Our downstream task evaluation setup assumes that models are saved in a format compatible with the HuggingFace libraries. We've provided a script which, given a directory containing our models, will iterate through all subdirectories looking for files named `$FAIRSEQ_FILE_NAME`, which we default to `consolidated.pt`, and converting those into Huggingface-compatible checkpoint files named `pytorch_model.bin` (the default determined by the transformers library). These are saved in `$HF_MODEL_DIR`, maintaining the folder structure of `$MODEL_FOLDER`. Any of the defined SLURM constants may be modified to suit your setup or preference:
 
 ```
 CBTM_PATH=/private/home/margaretli/cbtm_metaseq
@@ -137,3 +137,11 @@ python $CBTM_PATH/downstream_tasks/ensemble.py $DATASET --expert-outputs-dir $MI
 ```
 
 This will also produce a predictions file under the name `predictions_list.jsonl` in `$MIXTURE_FOLDER/output/ensemble/standard/top{topk}`.
+
+If you would like to eval for multiple values of `--topk`, you can pass in multiple values, e.g. `--topk 1 2 4`. Alternatively, if you would like to evaluate for all power-of-2 values of `--topk` up to `$NUM_CLUSTERS` (e.g., for `$NUM_CLUSTERS=16`, `--topk 1 2 4 8 16`), simply set `--topk all`:
+
+```
+topk=all
+python $CBTM_PATH/downstream_tasks/ensemble.py $DATASET --expert-outputs-dir $MIXTURE_FOLDER/output \
+ --mixture-file $MIXTURE_FOLDER/cluster.npy --topk $topk --method standard --num-clusters $NUM_CLUSTERS
+```
