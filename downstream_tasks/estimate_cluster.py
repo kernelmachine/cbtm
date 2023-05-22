@@ -1,24 +1,20 @@
-import torch
-from transformers import StoppingCriteriaList, MaxLengthCriteria, AutoTokenizer
+import argparse
 import itertools
-from accelerate import Accelerator
-from datasets import load_dataset
-import pandas as pd
 import numpy as np
+import os
+import pickle
+import random
+import torch
+
+from accelerate import Accelerator
+from pathlib import Path
+from sklearn.feature_extraction.text import TfidfVectorizer
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-import os
 
-import subprocess
-import random
-import pickle
-import argparse
-from pathlib import Path
-from transformers import default_data_collator
-from sklearn.feature_extraction.text import TfidfVectorizer
-from itertools import islice
-from sklearn.cluster import KMeans 
-from ipdb import set_trace as bp
+from datasets import load_dataset
+from transformers import default_data_collator, AutoTokenizer
+
 
 def set_seed(seed):
     torch.manual_seed(seed)
@@ -42,13 +38,9 @@ class NumberNormalizingVectorizer(TfidfVectorizer):
         return lambda doc: list(number_normalizer(tokenize(doc)))
 
 def load_data(file, dataset_name, dataset_config, kmeans, vectorizer, seed=42, max_eval_samples=None, group_texts=False, column=None):
+    
     set_seed(seed)
-
     accelerator = Accelerator()
-
-
-    accelerator_log_kwargs = {}
-
     tokenizer = AutoTokenizer.from_pretrained('facebook/opt-125m')
 
     if file is not None:
@@ -86,16 +78,10 @@ def load_data(file, dataset_name, dataset_config, kmeans, vectorizer, seed=42, m
             use_auth_token=None,
             streaming=False
         )
-    # bp()
-    # def subsample(x, size_ratio=0.01):
-    #     np.random.seed(42)
-    #     return [np.random.random() > (1 - size_ratio) for _ in range(len(x['text']))]
-    # raw_datasets['validation'] = raw_datasets['validation'].filter(lambda x: subsample(x, size_ratio=0.1), batched=True)
-        
 
     text_column = column
     
-    remove_columns = [key for key in list(islice(raw_datasets['validation'], 1))[0].keys()]
+    remove_columns = [key for key in list(itertools.islice(raw_datasets['validation'], 1))[0].keys()]
 
     def tokenize_function(examples):
         return tokenizer(examples[text_column])
@@ -114,14 +100,14 @@ def load_data(file, dataset_name, dataset_config, kmeans, vectorizer, seed=42, m
     if block_size is None:
             block_size = tokenizer.model_max_length
             if block_size > 1024:
-                logger.warning(
+                print(
                     f"The tokenizer picked seems to have a very large `model_max_length` ({tokenizer.model_max_length}). "
                     "Picking 1024 instead. You can change that default value by passing --block_size xxx."
                 )
             block_size = 1024
     else:
         if block_size > tokenizer.model_max_length:
-            logger.warning(
+            print(
                 f"The block_size passed ({block_size}) is larger than the maximum length for the model"
                 f"({tokenizer.model_max_length}). Using block_size={tokenizer.model_max_length}."
             )
@@ -176,7 +162,6 @@ def load_data(file, dataset_name, dataset_config, kmeans, vectorizer, seed=42, m
     return eval_dataset
 
 
-
 def load_model(path_to_model):
     with open(path_to_model, 'rb') as f:
         out = pickle.load(f)
@@ -186,14 +171,12 @@ def load_model(path_to_model):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--eval-file")
-    parser.add_argument("--dataset_name")
-    parser.add_argument("--dataset_config")
+    parser.add_argument("--dataset-name")
+    parser.add_argument("--dataset-config")
     parser.add_argument("--column", default="text")
     parser.add_argument("--path-to-clusterer", type=Path)
-    parser.add_argument("--local-rank")
-    parser.add_argument('--output-file')
+    parser.add_argument("--mixture-file-name")
     args = parser.parse_args()
-    # KMeans.main()
 
     # load vectorizer and clusterer
     vectorizer = load_model(args.path_to_clusterer / "tfidf.pkl")
@@ -204,7 +187,7 @@ if __name__ == '__main__':
     kmeans = load_model(path / "kmeans.pkl")
     '''
     # load dataset
-    eval_dataset = load_data(args.eval_file,args.dataset_name,args.dataset_config, kmeans, vectorizer, group_texts=False, column=args.column)
+    eval_dataset = load_data(args.eval_file, args.dataset_name, args.dataset_config, kmeans, vectorizer, group_texts=False, column=args.column)
     
     # batch dataset
     eval_dataloader = DataLoader(
@@ -221,4 +204,6 @@ if __name__ == '__main__':
     cs = torch.cat(clusters, 0)
     # original: cs = torch.nn.functional.softmax(-cs ** 2 / 0.1, dim=1).cpu().numpy()
     cs = torch.nn.functional.softmax(-cs ** 2 / 1, dim=1).cpu().numpy()
-    np.save(args.output_file, cs)
+
+    os.makedirs(os.path.dirname(args.mixture_file_name), exist_ok=True)
+    np.save(args.mixture_file_name, cs)

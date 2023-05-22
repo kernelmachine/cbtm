@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 
-def load_examples(dataset, n_shot=None, data_seed=None):
+def load_examples(data_dir, n_shot=None, data_seed=None):
     data = []
-    data_dir = f"./data_test/{dataset}/{n_shot}shot_{data_seed}.jsonl"
+    data_dir = f"{data_dir}/{n_shot}shot_{data_seed}.jsonl"
     with open(data_dir) as f:
         for line in f:
             data.append(json.loads(line))

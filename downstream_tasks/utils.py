@@ -415,9 +415,6 @@ def inference_autobatch(model, encoder, example, batch = 1, prelog = False, cach
            }
     return pred
 
-        
-        
-
 
 
 def fwd(model, encoder, examples, batch, cache = None):
@@ -495,9 +492,12 @@ def fwd(model, encoder, examples, batch, cache = None):
     predictions_dict['labels'] = labels
     return results, predictions_dict, predictions_list
 
-def score(model, model_name, encoder, examples, stem, split, batch, dataset, output):
+def score(model, model_path, encoder, examples, batch, mixture_path):
     # model_name_last = model_name.rsplit("/",maxsplit=1)[-1]
-    save_dir = output
+    save_folder_name = os.path.basename(model_path)
+    if not save_folder_name:
+        save_folder_name = os.path.basename(os.path.dirname(model_path))
+    save_dir = os.path.join(mixture_path, save_folder_name)
     Path(save_dir).mkdir(parents=True, exist_ok=True)
     hist_path = f'{save_dir}/hist'
     if not os.path.exists(hist_path):
