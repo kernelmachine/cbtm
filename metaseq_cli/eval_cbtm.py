@@ -32,7 +32,7 @@ from metaseq.sequence_scorer_btm import SequenceScorerBTM
 import numpy as np
 from tqdm.auto import tqdm
 from sklearn.feature_extraction.text import TfidfVectorizer
-from metaseq.cbtm_constants import VOCAB_DIR, DEFAULT_SLURM_ACCOUNT, DEFAULT_SLURM_PARTITION, DEFAULT_SLURM_CONSTRAINT
+from metaseq.xlbtm_constants import VOCAB_DIR, DEFAULT_SLURM_ACCOUNT, DEFAULT_SLURM_PARTITION, DEFAULT_SLURM_CONSTRAINT
 
 logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
