@@ -170,40 +170,47 @@ def load_model(path_to_model):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--eval-file")
+    parser.add_argument("--dataset-dir")
     parser.add_argument("--dataset-name")
     parser.add_argument("--dataset-config")
     parser.add_argument("--column", default="text")
     parser.add_argument("--path-to-clusterer", type=Path)
-    parser.add_argument("--mixture-file-name")
+    parser.add_argument("--mixture-folder")
+
+    parser.add_argument("--seed", nargs='+')
+    parser.add_argument('--n-shot', type=int, default=0)
+
     args = parser.parse_args()
 
     # load vectorizer and clusterer
     vectorizer = load_model(args.path_to_clusterer / "tfidf.pkl")
     kmeans = load_model(args.path_to_clusterer / "kmeans.pkl")
 
-    ''''
-    path = "/checkpoint/suching/clusterers/c4/2/"
-    kmeans = load_model(path / "kmeans.pkl")
-    '''
-    # load dataset
-    eval_dataset = load_data(args.eval_file, args.dataset_name, args.dataset_config, kmeans, vectorizer, group_texts=False, column=args.column)
-    
-    # batch dataset
-    eval_dataloader = DataLoader(
-            eval_dataset, collate_fn=default_data_collator, batch_size=16
-    )
+    for seed in args.seed:
+        eval_file = os.path.join(args.dataset_dir, f'{args.n_shot}shot_{seed}.jsonl')
+        mixture_file_name = os.path.join(args.mixture_folder, f'{args.n_shot}shot_seed{seed}', 'cluster.npy')
+        ''''
+        path = "/checkpoint/suching/clusterers/c4/2/"
+        kmeans = load_model(path / "kmeans.pkl")
+        '''
+        # load dataset
+        eval_dataset = load_data(eval_file, args.dataset_name, args.dataset_config, kmeans, vectorizer, group_texts=False, column=args.column)
+        
+        # batch dataset
+        eval_dataloader = DataLoader(
+                eval_dataset, collate_fn=default_data_collator, batch_size=16
+        )
 
-    # cluster
-    pbar = tqdm(eval_dataloader)
-    clusters = []
-    for batch in pbar:
-        clusters.append(batch['clusters'])
+        # cluster
+        pbar = tqdm(eval_dataloader)
+        clusters = []
+        for batch in pbar:
+            clusters.append(batch['clusters'])
 
-    # build probability distribution and save
-    cs = torch.cat(clusters, 0)
-    # original: cs = torch.nn.functional.softmax(-cs ** 2 / 0.1, dim=1).cpu().numpy()
-    cs = torch.nn.functional.softmax(-cs ** 2 / 1, dim=1).cpu().numpy()
+        # build probability distribution and save
+        cs = torch.cat(clusters, 0)
+        # original: cs = torch.nn.functional.softmax(-cs ** 2 / 0.1, dim=1).cpu().numpy()
+        cs = torch.nn.functional.softmax(-cs ** 2 / 1, dim=1).cpu().numpy()
 
-    os.makedirs(os.path.dirname(args.mixture_file_name), exist_ok=True)
-    np.save(args.mixture_file_name, cs)
+        os.makedirs(os.path.dirname(mixture_file_name), exist_ok=True)
+        np.save(mixture_file_name, cs)

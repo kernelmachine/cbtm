@@ -435,12 +435,15 @@ def fwd(model, encoder, examples, batch, cache = None):
     
     if type(model) != str:
         # print the first example to make sure the format is ok
+        
         print('='*50)
         print('MAKE SURE TOKENIZATION AND FORMATTING LOOKS OK')
         print('\nprint example 0 of {}:'.format(len(examples)))
         ex = examples[0]
         options = ex['options']
         opt = options[0]
+        print(ex)
+        print(opt)
         print('CONDITIONAL:')
         print(encoder.decode(encoder.encode(opt['premise'], add_special_tokens=False)) + '<BREAK>' + encoder.decode(encoder.encode(opt['hypothesis'], add_special_tokens=False)))
         print('UNCONDITIONAL:')

@@ -47,6 +47,9 @@ def ensemble_predictions(all_predictions_list, all_lambdas, save_dir, topk, num_
     cluster2_final_predictions_list = defaultdict(list)
     cluster2acc = [0]*num_clusters
 
+    # print(len(all_predictions_list))
+    # print(len(all_predictions_list[0]), len(all_predictions_list))
+    # print(all_lambdas.shape[0], all_lambdas.shape[1])
     assert len(all_predictions_list[0]) == all_lambdas.shape[0]
     assert len(all_predictions_list) == all_lambdas.shape[1]
 
@@ -186,41 +189,47 @@ def ensemble_predictions(all_predictions_list, all_lambdas, save_dir, topk, num_
     predictions_list_path = f'{save_dir}/ensemble/{method}/top{topk}/predictions_list.jsonl'
     with open(predictions_list_path, 'w') as f:
         f.write(json.dumps(predictions_list))
-
-
+    accs_path = f'{save_dir}/ensemble/{method}/top{topk}/accs'
+    with open(accs_path, 'w') as f:
+        f.write(json.dumps(accs))
     '''
     save path
     '''
     # print results
-    print(f'{args.dataset} gets {accs}% on {args.dataset}')
+    print(f'{args.dataset} gets {accs} on {args.dataset}')
 
 
-def main(args):
+def main(args, seed):
+    cluster_folder = args.mixture_folder
+    if args.cluster_folder:
+        cluster_folder = args.cluster_folder
+    mixture_file = os.path.join(cluster_folder, f'{args.n_shot}shot_seed{seed}', 'cluster.npy')
+    outputs_dir = os.path.join(args.mixture_folder, f'{args.n_shot}shot_seed{seed}', args.expert_outputs_dir)
     if args.debug:
         pdb.set_trace()
 
     if len(args.topk) == 1 and args.topk[0] == 'all':
         exponent = int(math.log(args.num_clusters, 2))
-        topk_list = [2**j for j in range(exponent)]
+        topk_list = [int(2**j) for j in range(exponent + 1)]
     else:
         topk_list = [int(t) if (int(t) != -1) else args.num_clusters for t in args.topk]
 
     print(topk_list)
 
-    os.environ['PYTHONHASHSEED'] = str(args.seed)
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
-    torch.cuda.manual_seed(args.seed)
-    torch.cuda.manual_seed_all(args.seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
 
     '''
     load data
     '''
     # load ensemble weights
-    all_lambdas = np.load(args.mixture_file) 
+    all_lambdas = np.load(mixture_file) 
     if args.method == 'standard':
-        all_lambdas = np.load(args.mixture_file) 
+        all_lambdas = np.load(mixture_file) 
     elif args.method == "dev" or args.method == "dev_permutation":
         dev_df = pd.read_csv(args.dev_path)
         # bp()
@@ -229,6 +238,9 @@ def main(args):
         all_lambdas = np.repeat(lambda_ex_dev, all_lambdas.shape[0], axis=0)
     elif args.method == "cached_prior":
         all_lambdas = np.zeros((all_lambdas.shape[0], all_lambdas.shape[1]))
+    elif args.method == "random":
+        a = np.random.rand(all_lambdas.shape[0], all_lambdas.shape[1]) 
+        all_lambdas = a / a.sum(1, keepdims=True)
     # rank = np.argsort(all_lambdas, axis=-1)
     '''
     def topk_by_sort(input, k, axis=None, ascending=True):
@@ -247,7 +259,7 @@ def main(args):
         all_topk.extend(ind.tolist())
     '''
     all_predictions_list = []
-    for name, _folders, files in os.walk(args.expert_outputs_dir):
+    for name, _folders, files in os.walk(outputs_dir):
         # regex = re.compile(re_string) if re_string else None
         if 'predictions_list.jsonl' not in files:
             continue #no model file found
@@ -261,7 +273,7 @@ def main(args):
 
     for topk in topk_list:
         ensemble_predictions(
-            all_predictions_list, all_lambdas, args.expert_outputs_dir, topk, args.num_clusters, args.method
+            all_predictions_list, all_lambdas, outputs_dir, topk, args.num_clusters, args.method
             )
 
 
@@ -269,20 +281,24 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('dataset', type=str)
     parser.add_argument('--expert-outputs-dir', type=str)
-    parser.add_argument('--mixture-file', type=str)
-    parser.add_argument('--softmax', type=int, default=1)
+    parser.add_argument('--mixture-folder', type=str, required=True)
+    parser.add_argument('--cluster-folder', type=str)
+    parser.add_argument('--softmax', action='store_true')
     parser.add_argument('--coeffs', type=int, default=1)
     parser.add_argument('--n-shot', type=int, default=0)
     parser.add_argument('--topk', nargs='+', default=[-1])
     parser.add_argument('--split', type=str, default='test')
-    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--seeds', nargs='+', default=[0])
     parser.add_argument('--num-clusters', type=int, default=0)
     parser.add_argument('--debug', action='store_true')
-    parser.add_argument('--method', type=str, default="standard")
+    parser.add_argument('--method', type=str, default="standard", choices=["standard", "random"])
     parser.add_argument('--dev_path', type=str, default="standard")
 
     args = parser.parse_args()
     print(args)
 
-    main(args)
+    seeds = [int(s) for s in args.seeds]
+    for seed in seeds:
+        print(seed)
+        main(args, seed)
 

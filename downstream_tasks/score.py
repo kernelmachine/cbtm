@@ -32,7 +32,8 @@ if __name__ == '__main__':
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--batch', type=int, default=10)
     parser.add_argument('--sample', type=int, default=None)
-    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--seeds', type=str, required=True)
+    parser.add_argument('--output-folder-name', type=str)
 
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
@@ -41,19 +42,24 @@ if __name__ == '__main__':
     if args.debug:
         pdb.set_trace()
 
-    os.environ['PYTHONHASHSEED'] = str(args.seed)
-    random.seed(args.seed)
-    np.random.seed(args.seed)
-    torch.manual_seed(args.seed)
-    torch.cuda.manual_seed(args.seed)
-    torch.cuda.manual_seed_all(args.seed)
+    # seeds = [int(s) for s in args.seeds]
 
     model, encoder, name = get_model(args.model_path)
-    examples = load_examples(args.data_dir, args.n_shot, args.seed)
+    seeds = [int(s) for s in args.seeds.split(",")]
+    for seed in seeds:
+        os.environ['PYTHONHASHSEED'] = str(seed)
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
 
-    accs = score(model, args.model_path, encoder, examples, args.batch, args.mixture_folder)
+        examples = load_examples(args.data_dir, args.n_shot, seed)
 
-    # print results
-    print(f'{name} gets {accs}% on {args.dataset}')
-    print(f"{accs['domain_cond']} & {accs['lm']} & {accs['tok_mean']} & {accs['pmi']} & {accs['dcpmi']}")
-    print(f"{accs['domain_cond']}, {accs['lm']}, {accs['tok_mean']}, {accs['dcpmi']}")
+        mixture_folder = os.path.join(args.mixture_folder, f'{args.n_shot}shot_seed{seed}', args.output_folder_name)
+        accs = score(model, args.model_path, encoder, examples, args.batch, mixture_folder)
+
+        # print results
+        print(f'{name} gets {accs}% on {args.dataset}')
+        print(f"{accs['domain_cond']} & {accs['lm']} & {accs['tok_mean']} & {accs['pmi']} & {accs['dcpmi']}")
+        print(f"{accs['domain_cond']}, {accs['lm']}, {accs['tok_mean']}, {accs['dcpmi']}")
