@@ -12,6 +12,7 @@ import textwrap
 from collections import OrderedDict
 from pathlib import Path
 
+from metaseq.fb_sweep.sweep import get_env_from_args
 from metaseq.utils import get_random_port
 
 BASH_IF_CLAUSE = """
@@ -172,8 +173,7 @@ def gen_train_command(
 ):
     # generate train command
     train_cmd = [args.python, os.path.join(internal_destination, args.script)]
-    if int(args.num_nodes * args.num_gpus) > 1:
-        train_cmd.extend(["--distributed-world-size", str(args.num_nodes * args.num_gpus)])
+    train_cmd.extend(["--distributed-world-size", str(args.num_nodes * args.num_gpus)])
     if args.num_nodes > 1 or (args.num_gpus > 1 and not args.local):
         train_cmd.extend(
             [
@@ -192,6 +192,22 @@ def gen_train_command(
             f"{args.prefix}.{save_dir_key}.ngpu{num_total_gpus}",
         )
         train_cmd.extend(["--save-dir", local_save_dir])
+    if getattr(args, "full_azure_upload_path", None) is not None:
+        if args.azure_folder_auto_name:
+            from urllib.parse import urlparse
+
+            o = urlparse(args.full_azure_upload_path)
+            o = o._replace(
+                path=os.path.join(
+                    o.path, f"{args.prefix}.{save_dir_key}.ngpu{num_total_gpus}"
+                )
+                + "/"
+            )
+            train_cmd.extend(["--save-async", "--cloud-upload-path", o.geturl()])
+        else:
+            train_cmd.extend(
+                ["--save-async", "--cloud-upload-path", args.full_azure_upload_path]
+            )
 
     if not args.no_wandb:
         try:
@@ -218,8 +234,8 @@ def gen_train_command(
                 f"{args.prefix}.{save_dir_key}.ngpu{str(args.num_nodes * args.num_gpus)}",
             )
         train_cmd.extend(["--tensorboard-logdir", tensorboard_logdir])
-    # cluster_env = get_env_from_args(args)
-    # train_cmd.extend(["--cluster-env", cluster_env.value])
+    cluster_env = get_env_from_args(args)
+    train_cmd.extend(["--cluster-env", cluster_env.value])
 
     for hp in config.values():
         train_cmd.extend(map(str, hp.get_cli_args()))
@@ -273,6 +289,18 @@ def gen_srun_command_and_str(
         ]
         base_srun_cmd += ["-x", excluded_hosts] if excluded_hosts is not None else []
         base_srun_cmd += ["-w", included_hosts] if included_hosts is not None else []
+    if args.container_image is not None:
+        base_srun_cmd += ["--container-image", args.container_image]
+        # hardcoded for Azure
+        base_srun_cmd += [
+            "--container-mounts",
+            f"/nfs2:/nfs2,/mnt:/mnt,/sys:/sys,/usr/local/bin:/usr/local/bin,{os.getcwd()}:/workspace",
+        ]
+        assert (
+            not args.snapshot_code
+        ), "--snapshot-code is not supported on Azure when using containers"
+        if args.container_save is not None:
+            base_srun_cmd += ["--container-save", args.container_save]
 
     srun_cmd = base_srun_cmd + train_cmd
     srun_cmd_str = " ".join(map(shlex.quote, srun_cmd))
@@ -361,6 +389,8 @@ def gen_sbatch_command_and_str(
     sbatch_cmd += ["-w", included_hosts] if included_hosts is not None else []
 
     wrapped_cmd = requeue_support()
+    if args.azure:
+        wrapped_cmd += "\n" + azure_support()
     wrapped_cmd += "\n" + srun_cmd_str
     if array_length is None:
         wrapped_cmd = wrapped_cmd + " \n wait $! \n sleep 610 & \n wait $!"
@@ -519,11 +549,12 @@ def launch_train(args, grid, grid_product, dry_run, postprocess_hyperparams):
             save_dir,
             save_dir_key,
         )
+
         # post cmds
         post_cmds = gen_post_commands(args, save_dir)
 
-        train_log = os.path.join(save_dir, "stdout.%j")  # %j = slurm job id
-        train_stderr = os.path.join(save_dir, "stderr.%j")  # %j = slurm job id
+        train_log = os.path.join(save_dir, "train.log")
+        train_stderr = os.path.join(save_dir, "train.stderr.%j")  # %j = slurm job id
         srun_cmd, srun_cmd_str = gen_srun_command_and_str(
             args, save_dir_key, train_log, train_stderr, train_cmd, post_cmds
         )
@@ -532,8 +563,7 @@ def launch_train(args, grid, grid_product, dry_run, postprocess_hyperparams):
             train_cmd_str = " ".join(train_cmd)
             dry_run(f"train command: {train_cmd_str}")
             for post_cmd in post_cmds:
-                dry_r
-                un(f"post steps command: {post_cmd}")
+                dry_run(f"post steps command: {post_cmd}")
         if args.local:
             local_run(args, env, train_cmd, post_cmds, dry_run)
         train_log_list.append(train_log)
@@ -565,7 +595,6 @@ def launch_train(args, grid, grid_product, dry_run, postprocess_hyperparams):
                 aggregate_cmd,
                 array_length=array_length,
             )
-            print()
 
             if args.dry_run:
                 dry_run_batch(
@@ -646,4 +675,22 @@ def requeue_support():
         trap 'trap_handler USR1' USR1
         trap 'trap_handler TERM' TERM
     """
+    )
+
+
+def azure_support():
+    return textwrap.dedent(
+        """
+        export NCCL_TOPO_FILE=/opt/microsoft/ndv4-topo.xml
+        export NCCL_IB_PCI_RELAXED_ORDERING=1
+        export UCX_IB_PCI_RELAXED_ORDERING=on
+        export NCCL_SOCKET_IFNAME=eth0
+        export UCX_NET_DEVICES=eth0
+        export CUDA_DEVICE_ORDER=PCI_BUS_ID
+        export OMPI_MCA_COLL_HCOLL_ENABLE=0
+        if [ -e "/etc/profile.d/modules.sh" ]; then
+            . /etc/profile.d/modules.sh
+            module load mpi/hpcx
+        fi
+        """
     )

@@ -1,13 +1,5 @@
-import os
-import random
 import json
-import csv
-import sys
-import os
 import logging
-import xml.etree.ElementTree as ET
-from utils import detokenizer
-from ipdb import set_trace as bp
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt = '%m/%d/%Y %H:%M:%S',
@@ -15,10 +7,9 @@ logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(messa
 logger = logging.getLogger(__name__)
 
 
-
-def load_examples(dataset, n_shot=None, data_seed=None):
+def load_examples(data_dir, n_shot=None, data_seed=None):
     data = []
-    data_dir = f"./data_test/{dataset}/{n_shot}shot_{data_seed}.jsonl"
+    data_dir = f"{data_dir}/{n_shot}shot_{data_seed}.jsonl"
     with open(data_dir) as f:
         for line in f:
             data.append(json.loads(line))
