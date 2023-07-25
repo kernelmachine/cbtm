@@ -10,16 +10,13 @@ from metaseq.fb_sweep.sweep import (
     get_env_from_args,
     main as fb_sweep_main,
 )
-from metaseq.constants import MODEL_SIZES, DATA_LOCATIONS, ComputeEnvs, VALID_SUBSETS
-from metaseq.cbtm_constants import VOCAB_DIR, PATH_TO_1_3B_MODEL, PATH_TO_6_7B_MODEL, DATA_DIR
+from metaseq.constants import MODEL_SIZES
+from metaseq.cbtm_constants import VOCAB_DIR, PATH_TO_1_3B_MODEL, PATH_TO_6_7B_MODEL
 
 DEFAULT_RANDOM_SEED = 1234
 
-# have to do this at the module level, unfortunately; unable to use args.<env>
-for _cluster, _folder in DATA_LOCATIONS.items():
-    if os.path.exists(_folder):
-        from metaseq.fb_sweep.dependency_checks import *  # noqa
-        break
+#run dep checks
+from metaseq.fb_sweep.dependency_checks import *  # noqa
 
 
 PRETRAIN_MODEL_LOCATIONS = {
@@ -30,8 +27,6 @@ PRETRAIN_MODEL_LOCATIONS = {
 
 def get_grid(args):
     grid = []
-    cluster_env = get_env_from_args(args)
-    DATA_ROOT = DATA_LOCATIONS[cluster_env]
 
     FINE_TUNE_DATA_CONFIGS = {
         "ft_data": {
