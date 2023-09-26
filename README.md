@@ -251,7 +251,7 @@ The field `sp_id` indicates a line (i.e., document) within a file, and the field
 
 Now we'll use the clustered data to train experts. You'll need at least 4 GPUs simultaneously to train each model.
 
-This tutorial uses our `train_cbtm` script, which interfaces with SLURM. 
+This tutorial uses our `train_cbtm` script, which interfaces with SLURM. By default, training jobs will request 8 CPUs per GPU and 48G of memory. These resource parameters can be customized in the `train_cbtm.sh` script.  
 
 We have also provided an example sbatch script, if desired, in `metaseq/scripts/example_sbatch.sh`. You may need to edit this example sbatch command to include any additional slurm arguments you might need to get it working on your system.
 

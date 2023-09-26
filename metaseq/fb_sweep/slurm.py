@@ -355,8 +355,7 @@ def gen_sbatch_command_and_str(
         sbatch_cmd.extend(["--time", args.time])
     if args.mem is not None:
         sbatch_cmd += ["--mem", args.mem]
-    else:
-        sbatch_cmd += ["--mem", "0"]
+
     sbatch_cmd += ["-x", excluded_hosts] if excluded_hosts is not None else []
     sbatch_cmd += ["-w", included_hosts] if included_hosts is not None else []
 

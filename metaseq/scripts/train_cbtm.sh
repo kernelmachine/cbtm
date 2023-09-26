@@ -90,6 +90,8 @@ python -m metaseq.fb_sweep.ft_stream \
     -n $NUM_NODES \
     -g $NUM_GPUS \
     -p $PROJECT \
+    --cpus-per-task 8 \
+    --mem=48G \
     --checkpoints-dir $CHECKPOINT_DIR \
     $MOD_PHRASE \
     --model-size $MODEL_SIZE \
@@ -112,7 +114,6 @@ python -m metaseq.fb_sweep.ft_stream \
     $LABEL_LOSS_PHRASE \
     --partition $PARTITION \
     --account $ACCOUNT \
-    --exclusive \
     --resume-failed \
     $RANDOM_CLUSTERS_PHRASE \
     $CLUSTER_TAG_PHRASE \
